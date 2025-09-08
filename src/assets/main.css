@@ -1,0 +1,54 @@
+:root {
+    --light: #E5E5E5;
+    --dark: #0b0b0b;
+
+    --font-rg: 1.5em;
+    --font-md: 2.5em;
+    --font-lg: 3em;
+    --font-xl: 5em;
+    --font-2xl: 8vw;
+    --font-3xl: 90vh;
+
+    --space-xl: 22vw;
+    --space-lg: 12em;
+    --space-md: 5em;
+    --space-rg: 1em;
+}
+
+
+@font-face {
+    font-family: 'serif';
+    src: url(serif.otf);
+}
+
+@font-face {
+    font-family: 'sans';
+    src: url(sans.otf);
+}
+
+body {
+    margin: 0;
+    font-family: 'sans';
+    font-size: 14px;
+    background: var(--light);
+    color: var(--dark);
+}
+
+a {
+    color: currentColor;
+    text-decoration: none;
+}
+
+ul, li {
+    margin: 0;
+    margin-block: 0;
+    padding: 0;
+    padding-block: 0;
+    list-style-type: none;
+}
+
+p, h1, h2, h3, h4 {
+    margin: 0;
+    font-weight: normal;
+    line-height: 1;
+}
