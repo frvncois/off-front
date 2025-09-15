@@ -1,8 +1,12 @@
+<!-- src/components/home/HomeAbout.vue -->
 <template>
   <section>
     <div class="about is-wrap">
       <div class="is-content">
-        <p v-for="(item, index) in content?.About" :key="index">
+        <p 
+          v-for="(item, index) in content?.About" 
+          :key="index"
+        >
           <component
             :is="getHtmlTag(item.type, item.level)"
             v-html="getTextFromParagraph(item)"
@@ -19,9 +23,9 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
+import { defineProps, ref } from 'vue'
 
-defineProps({
+const props = defineProps({
   content: {
     type: Object,
     default: () => ({})
@@ -41,35 +45,42 @@ const getHtmlTag = (type, level) => {
   }
   return 'p'
 }
-</script>
 
+
+</script>
 
 <style scoped>
 .about {
-    &.is-wrap {
+  &.is-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    
+    > .is-content {
+      padding: var(--space-lg);
+      
+      > p {
+        font-family: 'serif';
+        font-size: var(--font-lg);
+        text-align: center;
+        transform: translateY(100%);
+      }
+    }
+    
+    > .is-action {
+      transform: translateY(100%);
+      
+      a {
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        height: 100vh;
-        > .is-content {
-            padding: var(--space-lg);
-            > p {
-                font-family: 'serif';
-                font-size: var(--font-lg);
-                text-align: center;
-            }
-        }
-        > .is-action {
-            a {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: var(--space-rg);
-                font-size: var(--font-md);
-            }
-        }
+        gap: var(--space-rg);
+        font-size: var(--font-md);
+      }
     }
+  }
 }
 
 @media screen and (max-width: 1120px) {

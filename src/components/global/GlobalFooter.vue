@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useContentStore } from '@/stores/content'
 import LogoIcon from '@/assets/LogoIcon.vue'
+import { RouterLink } from 'vue-router'
 
 const contentStore = useContentStore()
 const contactData = computed(() => contentStore.getContactInfo)
@@ -21,7 +22,7 @@ const formatUrl = (url) => {
       <LogoIcon/>
     </div>
     <div class="is-action">
-      <a href="/">Contactez-moi<span>-></span></a>
+      <RouterLink to="/contact">Contactez-moi<span>-></span></RouterLink>
     </div>
     <nav>
       <div class="is-items">
@@ -41,6 +42,9 @@ footer {
     justify-content: center;
     padding: var(--space-lg);
     gap: var(--space-md);
+    > .is-logo {
+      margin-right: -1.5em;
+    }
     > .is-action {
         a {
             font-size: var(--font-md);

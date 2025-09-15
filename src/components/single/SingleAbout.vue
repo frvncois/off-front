@@ -7,9 +7,9 @@
       </div>
       <div class="is-thumbnail">
         <span>(01)</span>
-        <img 
-          v-if="project?.Cover" 
-          :src="`http://localhost:1337${project.Cover.url}`" 
+        <img
+          v-if="project?.Cover"
+          :src="project.Cover.url"
           :alt="project.Title"
         />
       </div>

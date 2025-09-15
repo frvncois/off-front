@@ -17,7 +17,7 @@
           <h1>Projets<span>Réalisé</span></h1>
         </div>
         <div class="is-action">
-          <router-link to="/projects">></router-link>
+          <router-link to="/projects">-></router-link>
         </div>
       </div>
       <div class="is-items" ref="itemsRef">
@@ -31,7 +31,7 @@
           <div class="is-cover">
             <img
               v-if="project.Cover"
-              :src="`http://localhost:1337${project.Cover.url}`"
+              :src="project.Cover.url"
               :alt="project.Title"
             />
           </div>
@@ -65,14 +65,10 @@ const handleScroll = () => {
   const sectionHeight = sectionRef.value.offsetHeight
   const windowHeight = window.innerHeight
   
-  // Calculate scroll progress within the section
-  // When section top hits top of viewport, start at 0
-  // When section bottom hits bottom of viewport, end at 1
   const scrollStart = -sectionRect.top
   const scrollEnd = sectionHeight - windowHeight
   const scrollProgress = Math.max(0, Math.min(1, scrollStart / scrollEnd))
   
-  // Translate from 0% to -100%
   const translateX = scrollProgress * -58
   itemsRef.value.style.transform = `translateX(${translateX}%)`
 }

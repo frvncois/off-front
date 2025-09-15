@@ -1,12 +1,12 @@
 <template>
   <section>
     <ul class="gallery is-items">
-      <li v-for="(image, index) in project?.Gallery" 
-          :key="image.id" 
+      <li v-for="(image, index) in project?.Gallery"
+          :key="image.id"
           class="is-item">
         <span>({{ String(index + 2).padStart(2, '0') }})</span>
-        <img 
-          :src="`http://localhost:1337${image.url}`" 
+        <img
+          :src="image.url"
           :alt="image.name"
         />
       </li>

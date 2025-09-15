@@ -4,10 +4,15 @@
       <div class="is-cover">
         <img v-if="content?.Cover" :src="getImageUrl(content.Cover)" :alt="content.Title" />
       </div>
-      <div class="is-content">
-        <p v-for="(paragraph, index) in content.Intro" :key="index">
-          {{ getTextFromParagraph(paragraph) }}
-        </p>
+      <div v-if="content?.Intro" 
+           class="is-content">
+        <div v-for="(paragraph, index) in content.Intro" :key="index">
+          <component
+            :is="getHtmlTag(paragraph.type, paragraph.level)"
+            v-html="renderRichText(paragraph)"
+            data-animate="reveal"
+          />
+        </div>
       </div>
     </div>
   </section>
@@ -25,20 +30,38 @@ defineProps({
 
 const getImageUrl = (imageObj) => {
   if (!imageObj?.url) return null
-  return `http://localhost:1337${imageObj.url}`
+  return imageObj.url
 }
 
-const getTextFromParagraph = (paragraph) => {
-  if (paragraph.children && paragraph.children[0]) {
-    return paragraph.children[0].text
+const getHtmlTag = (type, level) => {
+  if (type === 'heading') {
+    return `h${level}`
   }
-  return ''
+  return 'p'
+}
+
+const renderRichText = (paragraph) => {
+  if (!paragraph.children) return ''
+  
+  return paragraph.children.map(child => {
+    if (child.type === 'text') {
+      let text = child.text
+      // Apply formatting
+      if (child.bold) text = `<strong>${text}</strong>`
+      if (child.italic) text = `<em>${text}</em>`
+      if (child.underline) text = `<u>${text}</u>`
+      if (child.strikethrough) text = `<s>${text}</s>`
+      return text
+    }
+    // Handle other node types like links, etc.
+    if (child.type === 'link') {
+      const linkText = child.children?.map(c => c.text).join('') || ''
+      return `<a href="${child.url}" target="_blank">${linkText}</a>`
+    }
+    return child.text || ''
+  }).join('')
 }
 </script>
-
-
-
-
 
 <style scoped>
 .hero {
@@ -62,8 +85,12 @@ const getTextFromParagraph = (paragraph) => {
       justify-content: center;
       flex-basis: 50%;
       padding: var(--space-lg);
+      > div {
+        overflow: hidden;
+        padding-bottom: 4px;
+      }
       
-      > p {
+      & p {
         font-family: 'serif';
         font-size: var(--font-md);
       }
@@ -82,7 +109,8 @@ const getTextFromParagraph = (paragraph) => {
       margin-top: 25vh;
     }
     > .is-cover {
-      padding: var(--space-rg)!important;}
+      padding: var(--space-rg)!important;
+    }
   }
 }
 </style>
