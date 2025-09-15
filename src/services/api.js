@@ -4,6 +4,11 @@ import axios from 'axios'
 const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || 'https://acceptable-heart-0cd6e519a8.strapiapp.com'
 const STRAPI_API_KEY = import.meta.env.VITE_STRAPI_API_KEY
 
+// Clean up URL to prevent double slashes
+const cleanUrl = (url) => {
+  return url.replace(/\/+$/, '') // Remove trailing slashes
+}
+
 // Validate configuration
 if (!STRAPI_API_KEY) {
   console.warn('⚠️ VITE_STRAPI_API_KEY is missing! Add it to your .env file')
@@ -11,7 +16,7 @@ if (!STRAPI_API_KEY) {
 
 // Create axios instance with Strapi Cloud configuration
 const api = axios.create({
-  baseURL: `${STRAPI_URL}/api`,
+  baseURL: `${cleanUrl(STRAPI_URL)}/api`,
   headers: {
     'Authorization': `Bearer ${STRAPI_API_KEY}`,
     'Content-Type': 'application/json'
@@ -124,6 +129,7 @@ export const apiService = {
   async testConnection() {
     try {
       console.log('🧪 Testing Strapi connection...')
+      console.log('🔗 Base URL:', api.defaults.baseURL)
       const response = await api.get('/users-permissions/roles')
       console.log('✅ Connection successful!')
       return true
@@ -136,7 +142,9 @@ export const apiService = {
   // Utility method to get current configuration
   getConfig() {
     return {
-      baseURL: `${STRAPI_URL}/api`,
+      baseURL: api.defaults.baseURL,
+      originalUrl: STRAPI_URL,
+      cleanedUrl: cleanUrl(STRAPI_URL),
       hasApiKey: !!STRAPI_API_KEY,
       environment: import.meta.env.MODE,
       usingCloud: true
