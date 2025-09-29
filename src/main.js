@@ -1,28 +1,30 @@
 import './assets/main.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import Lenis from 'lenis'
 
-// Import our custom animation library - IMPORTANT!
-import './utils/animate.js'
+import { gsap } from "gsap";
 
-console.log('🎯 Main.js loaded, animation library should be imported')
+import { CustomEase } from "gsap/CustomEase";
+    
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+import { Observer } from "gsap/Observer";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
+import { SplitText } from "gsap/SplitText";
+import { TextPlugin } from "gsap/TextPlugin";
+
 
 import App from './App.vue'
 import router from './router'
 
 const app = createApp(App)
 
-const lenis = new Lenis({
-  autoRaf: true,
-});
+gsap.registerPlugin(MotionPathPlugin,Observer,ScrollToPlugin,SplitText,ScrollTrigger,ScrollSmoother,TextPlugin,CustomEase);
 
-lenis.on('scroll', (e) => {
-});
+app.config.globalProperties.$gsap = gsap
 
 app.use(createPinia())
 app.use(router)
 
 app.mount('#app')
-
-console.log('🚀 Vue app mounted')

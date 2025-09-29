@@ -7,7 +7,7 @@ import SingleCollab from '@/components/single/SingleCollab.vue'
 import SingleGallery from '@/components/single/SingleGallery.vue'
 import SingleNav from '@/components/single/SingleNav.vue'
 import SingleTitle from '@/components/single/SingleTitle.vue'
-import GlobalFooter from '@/components/global/GlobalFooter.vue'
+import GlobalCTA from '@/components/global/GlobalCTA.vue'
 
 const route = useRoute()
 const contentStore = useContentStore()
@@ -23,5 +23,5 @@ const allProjects = computed(() => contentStore.getAllProjects)
   <SingleGallery :project="project" />
   <SingleCollab :project="project" />
   <SingleNav :project="project" :all-projects="allProjects" />
-  <GlobalFooter />
+  <GlobalCTA />
 </template>

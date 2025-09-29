@@ -5,7 +5,6 @@ import ContactInfo from '@/components/contact/ContactInfo.vue'
 import ContactTrack from '@/components/contact/ContactTrack.vue'
 
 const contentStore = useContentStore()
-
 const contactData = computed(() => contentStore.getContactInfo)
 </script>
 

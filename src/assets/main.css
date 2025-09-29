@@ -13,7 +13,18 @@
     --space-lg: 12em;
     --space-md: 5em;
     --space-rg: 1em;
+    --space-xs: 0.25em;
 }
+
+@media screen and (max-width: 1120px) {
+  :root {
+    --font-rg: 1.25em;
+    --font-md: 2em;
+    --font-2xl: 3em;
+    --space-lg: 6em;
+  }
+}
+
 
 
 @font-face {
@@ -23,7 +34,7 @@
 
 @font-face {
     font-family: 'sans';
-    src: url(sans.otf);
+    src: url(body.ttf);
 }
 
 body {
@@ -32,6 +43,7 @@ body {
     font-size: 14px;
     background: var(--light);
     color: var(--dark);
+    letter-spacing: -2%;
 }
 
 a {
@@ -51,4 +63,9 @@ p, h1, h2, h3, h4 {
     margin: 0;
     font-weight: normal;
     line-height: 1;
+}
+
+::selection {
+  color: var(--dark);
+  background-color: rgba(120, 120, 120, 0.25);
 }
