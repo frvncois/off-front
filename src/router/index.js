@@ -37,19 +37,54 @@ router.beforeEach((to, from, next) => {
   setTimeout(() => next(), MAX_EXIT_DURATION)
 })
 
-router.afterEach(() => {
-  // Ensure ScrollSmoother doesn't interfere with instant positioning
+router.afterEach((to) => {
+  // Force immediate scroll reset
+  const resetScroll = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
+  }
+
+  // Immediate reset
+  resetScroll()
+
+  // Handle ScrollSmoother
   const scrollSmoother = window.ScrollSmoother?.get()
   if (scrollSmoother) {
     scrollSmoother.scrollTo(0, false)
   }
 
-  // Refresh ScrollTrigger if present
+  // Force additional resets for projects route
+  if (to.path === '/projects') {
+    // Multiple attempts to ensure it sticks
+    setTimeout(() => {
+      resetScroll()
+      if (window.ScrollSmoother?.get()) {
+        window.ScrollSmoother.get().scrollTo(0, false)
+      }
+    }, 0)
+
+    setTimeout(() => {
+      resetScroll()
+      if (window.ScrollSmoother?.get()) {
+        window.ScrollSmoother.get().scrollTo(0, false)
+      }
+    }, 50)
+
+    setTimeout(() => {
+      resetScroll()
+      if (window.ScrollSmoother?.get()) {
+        window.ScrollSmoother.get().scrollTo(0, false)
+      }
+    }, 100)
+  }
+
+  // Refresh ScrollTrigger
   setTimeout(() => {
     if (window.ScrollTrigger) {
       window.ScrollTrigger.refresh()
     }
-  }, 100)
+  }, 150)
 })
 
 export default router

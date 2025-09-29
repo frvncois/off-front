@@ -141,7 +141,8 @@ const nextProject = computed(() => {
         <ArrowNext/>
       </router-link>
       <router-link v-else to="/projects">
-        Retour aux projets ->
+        Retour aux projets
+        <ArrowNext/>
       </router-link>
     </div>
   </section>

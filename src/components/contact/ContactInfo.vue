@@ -1,9 +1,6 @@
 <script setup>
 import { defineProps, onMounted, onUnmounted, nextTick, ref, watch } from 'vue'
 import { gsap } from 'gsap'
-import { SplitText } from 'gsap/SplitText'
-
-gsap.registerPlugin(SplitText)
 
 const props = defineProps({
   contact: {
@@ -13,27 +10,22 @@ const props = defineProps({
 })
 
 const containerRef = ref(null)
-const splitInstances = ref([])
 const animations = ref([])
 const hasAnimated = ref(false)
 
 const cleanup = () => {
   animations.value.forEach(tween => tween?.kill?.())
-  splitInstances.value.forEach(split => { try { split.revert() } catch (e) {} })
   animations.value = []
-  splitInstances.value = []
   hasAnimated.value = false
 }
 
 const setInitialStates = () => {
   if (!containerRef.value) return
 
-  // Split title into chars
+  // Title
   const titleEl = containerRef.value.querySelector('.is-title h1')
   if (titleEl) {
-    const split = new SplitText(titleEl, { type: 'chars' })
-    splitInstances.value.push(split)
-    gsap.set(split.chars, { y: '-100%' })
+    gsap.set(titleEl, { y: '-0.5em', opacity: 0 })
   }
 
   // Anchors
@@ -46,16 +38,16 @@ const setInitialStates = () => {
 const animateElements = () => {
   if (!containerRef.value) return
 
-  const chars = splitInstances.value.flatMap(s => s.chars || [])
+  const titleEl = containerRef.value.querySelector('.is-title h1')
   const links = Array.from(containerRef.value.querySelectorAll('.is-items li a'))
 
-  const sequence = [...chars, ...links] // one stagger sequence
+  const sequence = [titleEl, ...links].filter(Boolean)
 
   if (!sequence.length) return
 
   const tl = gsap.timeline()
   tl.to(sequence, {
-    y: '0%',
+    y: '0em',
     opacity: 1,
     duration: 1,
     stagger: 0.08,
@@ -69,13 +61,13 @@ const animateElements = () => {
 const playContactInfoExitAnimations = () => {
   if (!hasAnimated.value || !containerRef.value) return
 
-  const chars = splitInstances.value.flatMap(s => s.chars || [])
+  const titleEl = containerRef.value.querySelector('.is-title h1')
   const links = Array.from(containerRef.value.querySelectorAll('.is-items li a'))
-  const sequence = [...links, ...chars] // reverse order on exit
+  const sequence = [...links, titleEl].filter(Boolean) // reverse order on exit (links first, then title)
 
   const tl = gsap.timeline()
   tl.to(sequence, {
-    y: '100%',
+    y: '0.25em',
     opacity: 0,
     duration: 0.6,
     stagger: 0.05,
@@ -148,14 +140,11 @@ const formatUrl = (url) => {
     text-align: center;
     gap: var(--space-md);
 
-    > .is-title > .is-mask {
-      overflow: hidden;
-    }
-
     h1 {
       font-size: var(--font-2xl);
       font-family: 'serif';
       will-change: transform, opacity;
+      margin: 0;
     }
 
     .is-items li a {

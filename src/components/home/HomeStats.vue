@@ -157,11 +157,16 @@ const getStatText = (stat) => stat?.children?.[0]?.text || ''
 @media screen and (max-width: 1120px) {
   .stats {
     &.is-wrap {
-      padding: var(--space-rg);
+      padding: var(--space-lg) var(--space-rg);
 
       > .is-content {
         display: flex;
         flex-direction: column;
+        > .is-item {
+          > h1 { font-size: var(--font-lg); }
+          > h2 { font-size: var(--font-lg); font-family: 'serif'; }
+          > h3 { font-size: var(--font-rg); }
+        }
       }
     }
   }

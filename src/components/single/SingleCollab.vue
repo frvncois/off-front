@@ -23,7 +23,6 @@
 <script setup>
 import { defineProps, onMounted, onUnmounted, nextTick, ref, watch } from 'vue'
 import { gsap } from 'gsap'
-import { SplitText } from 'gsap/SplitText'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -36,7 +35,6 @@ const props = defineProps({
 })
 
 const sectionRef = ref(null)
-const splitInstances = ref([])
 const animations = ref([])
 const scrollTriggers = ref([])
 const hasAnimated = ref(false)
@@ -47,7 +45,6 @@ const hasAnimated = ref(false)
 const cleanup = () => {
   animations.value.forEach(anim => anim.kill?.())
   scrollTriggers.value.forEach(trigger => trigger.kill?.())
-  splitInstances.value.forEach(split => { try { split.revert() } catch(e) {} })
 
   // reset inline styles
   sectionRef.value?.querySelectorAll('[style]').forEach(el => el.removeAttribute('style'))
@@ -59,7 +56,6 @@ const cleanup = () => {
 
   animations.value = []
   scrollTriggers.value = []
-  splitInstances.value = []
   hasAnimated.value = false
 }
 
@@ -68,37 +64,37 @@ const cleanup = () => {
  */
 const setInitialStates = () => {
   if (!sectionRef.value) return
-  const textElements = sectionRef.value.querySelectorAll('.is-content h1')
-  textElements.forEach(el => {
-    const split = new SplitText(el, { type: 'chars' })
-    splitInstances.value.push(split)
-    gsap.set(split.chars, { y: '-100%' })
-  })
+  const h1Elements = sectionRef.value.querySelectorAll('.is-content h1')
+  gsap.set(h1Elements, { y: '1em', opacity: 0 })
 }
 
 /**
- * Play entrance animations
+ * Setup scroll-triggered animations
  */
-const animateTextElements = () => {
-  if (hasAnimated.value) return
+const setupScrollAnimations = () => {
+  if (hasAnimated.value || !sectionRef.value) return
 
-  const chars = splitInstances.value.flatMap(split => split.chars || [])
-  if (!chars.length) {
-    // If no chars available, try again after a short delay
-    setTimeout(() => {
-      hasAnimated.value = false
-      animateTextElements()
-    }, 50)
-    return
-  }
+  const h1Elements = sectionRef.value.querySelectorAll('.is-content h1')
+  if (!h1Elements.length) return
 
   const tl = gsap.timeline()
-  tl.to(chars, {
-    y: '0%',
+  tl.to(h1Elements, {
+    y: '0em',
+    opacity: 1,
     duration: 0.8,
-    stagger: 0.02,
+    stagger: 0.2,
     ease: 'power3.out'
   })
+
+  // Create ScrollTrigger to animate when component comes into view
+  scrollTriggers.value.push(
+    ScrollTrigger.create({
+      trigger: sectionRef.value,
+      start: 'top 80%',
+      animation: tl,
+      once: true
+    })
+  )
 
   animations.value.push(tl)
   hasAnimated.value = true
@@ -108,14 +104,16 @@ const animateTextElements = () => {
  * Exit animation — triggered globally by router
  */
 const playSingleCollabExitAnimations = () => {
-  const chars = splitInstances.value.flatMap(split => split.chars || [])
-  if (!chars.length) return
+  if (!sectionRef.value) return
+  const h1Elements = sectionRef.value.querySelectorAll('.is-content h1')
+  if (!h1Elements.length) return
 
   const tl = gsap.timeline()
-  tl.to(chars, {
-    y: '100%',
+  tl.to(h1Elements, {
+    y: '1em',
+    opacity: 0,
     duration: 0.8,
-    stagger: 0.02,
+    stagger: 0.2,
     ease: 'power3.in'
   })
 
@@ -127,17 +125,15 @@ watch(() => props.project?.id, async (newId, oldId) => {
   if (newId && newId !== oldId) {
     cleanup()
     await nextTick()
-    // Always animate when project changes
     setInitialStates()
-    animateTextElements()
+    setupScrollAnimations()
   }
 }, { immediate: false })
 
 onMounted(async () => {
   await nextTick()
-  // Always animate the first h1, and second h1 if collaboration exists
   setInitialStates()
-  animateTextElements()
+  setupScrollAnimations()
 })
 
 onUnmounted(() => {
@@ -149,7 +145,7 @@ watch(() => props.project?.Collaboration, async (newCollab, oldCollab) => {
     cleanup()
     await nextTick()
     setInitialStates()
-    animateTextElements()
+    setupScrollAnimations()
   }
 }, { immediate: true })
 
@@ -165,13 +161,16 @@ window.playSingleCollabExitAnimations = playSingleCollabExitAnimations
       flex-direction: column;
       align-items: flex-end;
       padding: var(--space-rg);
+      margin-bottom: var(--space-lg);
 
       > .is-mask {
-        overflow: hidden;
-
         h1 {
           will-change: transform, opacity;
           text-transform: uppercase;
+          margin: 0;
+        }
+        a {
+          font-family: 'serif';
         }
       }
     }
