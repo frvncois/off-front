@@ -99,8 +99,8 @@ const setupGalleryAnimations = () => {
       })
     )
 
-    // parallax on middle items
-    if (index >= 2 && index <= 4) {
+    // parallax on middle items (only on desktop)
+    if (index >= 2 && index <= 4 && window.innerWidth > 1120) {
       scrollTriggers.value.push(
         ScrollTrigger.create({
           trigger: item,

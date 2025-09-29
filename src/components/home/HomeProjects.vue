@@ -215,10 +215,10 @@ const setupScrollEffects = () => {
   const scrubTrigger = ScrollTrigger.create({
     trigger: sectionRef.value,
     start: 'top top',
-    end: 'bottom top',
+    end: 'bottom center',
     scrub: 1,
     invalidateOnRefresh: true,
-    animation: gsap.fromTo(itemsRef.value, { x: '0%' }, { x: '-60%' }),
+    animation: gsap.fromTo(itemsRef.value, { x: '0%' }, { x: '-75%' }),
     onRefresh: () => {
       // Ensure element is still valid on refresh
       if (!itemsRef.value || !document.contains(itemsRef.value)) {
@@ -296,7 +296,7 @@ onUnmounted(() => {
 
 <style scoped>
 section {
-  height: 300vh; /* keep this */
+  height: 300vh;
 }
 
 .projects {
@@ -313,8 +313,8 @@ section {
         text-transform: uppercase;
         width: 100%;
         will-change: transform;
-        & h1 { line-height: 0.9; display: flex; }
-        & span { font-family: 'serif'; margin: 0 var(--space-xs); }
+        & h1 { line-height: 0.9; display: flex;}
+        & span { font-family: 'serif'; margin: 0 var(--space-xs); line-height: 1; }
       }
       > .is-action {
         display: flex; align-items: center; justify-content: center;

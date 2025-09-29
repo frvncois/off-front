@@ -24,6 +24,9 @@
 import { defineProps, onMounted, onUnmounted, nextTick, ref, watch } from 'vue'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const props = defineProps({
   project: {
@@ -35,6 +38,7 @@ const props = defineProps({
 const sectionRef = ref(null)
 const splitInstances = ref([])
 const animations = ref([])
+const scrollTriggers = ref([])
 const hasAnimated = ref(false)
 
 /**
@@ -42,6 +46,7 @@ const hasAnimated = ref(false)
  */
 const cleanup = () => {
   animations.value.forEach(anim => anim.kill?.())
+  scrollTriggers.value.forEach(trigger => trigger.kill?.())
   splitInstances.value.forEach(split => { try { split.revert() } catch(e) {} })
 
   // reset inline styles
@@ -53,6 +58,7 @@ const cleanup = () => {
   })
 
   animations.value = []
+  scrollTriggers.value = []
   splitInstances.value = []
   hasAnimated.value = false
 }
@@ -77,7 +83,14 @@ const animateTextElements = () => {
   if (hasAnimated.value) return
 
   const chars = splitInstances.value.flatMap(split => split.chars || [])
-  if (!chars.length) return
+  if (!chars.length) {
+    // If no chars available, try again after a short delay
+    setTimeout(() => {
+      hasAnimated.value = false
+      animateTextElements()
+    }, 50)
+    return
+  }
 
   const tl = gsap.timeline()
   tl.to(chars, {
@@ -114,27 +127,25 @@ watch(() => props.project?.id, async (newId, oldId) => {
   if (newId && newId !== oldId) {
     cleanup()
     await nextTick()
-    if (props.project?.Collaboration) {
-      setInitialStates()
-      animateTextElements()
-    }
+    // Always animate when project changes
+    setInitialStates()
+    animateTextElements()
   }
 }, { immediate: false })
 
 onMounted(async () => {
   await nextTick()
-  if (props.project?.Collaboration) {
-    setInitialStates()
-    animateTextElements()
-  }
+  // Always animate the first h1, and second h1 if collaboration exists
+  setInitialStates()
+  animateTextElements()
 })
 
 onUnmounted(() => {
   cleanup()
 })
 
-watch(() => props.project?.Collaboration, async (newCollab) => {
-  if (newCollab && !hasAnimated.value) {
+watch(() => props.project?.Collaboration, async (newCollab, oldCollab) => {
+  if (newCollab !== oldCollab && !hasAnimated.value) {
     cleanup()
     await nextTick()
     setInitialStates()

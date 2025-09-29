@@ -150,12 +150,12 @@ const nextProject = computed(() => {
 <style scoped>
 .nav {
   &.is-wrap {
-    display: flex;
-    justify-content: center;
-    padding: var(--space-md);
-
     a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       font-size: var(--font-md);
+      gap: var(--space-rg);
       will-change: transform, opacity;
     }
   }
