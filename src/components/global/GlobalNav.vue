@@ -141,6 +141,7 @@ defineExpose({
   inset: 0;
   z-index: 10;
   background: var(--light);
+  max-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;

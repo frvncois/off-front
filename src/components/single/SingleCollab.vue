@@ -168,6 +168,7 @@ window.playSingleCollabExitAnimations = playSingleCollabExitAnimations
           will-change: transform, opacity;
           text-transform: uppercase;
           margin: 0;
+          font-size: var(--font-rg);
         }
         a {
           font-family: 'serif';

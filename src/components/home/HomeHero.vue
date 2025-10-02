@@ -88,8 +88,8 @@ const animateElements = () => {
   if (chars.length) {
     tl.to(chars, {
       y: '0%',
-      duration: 1.5,
-      stagger: 0.02,
+      duration: 0.8,
+      stagger: 0.015,
       ease: 'power4.inOut'
     }, 0.3)
   }
@@ -212,6 +212,8 @@ const renderRichText = (paragraph) => {
         font-size: var(--font-md);
         overflow: hidden;
         will-change: transform;
+        line-height: 1;
+        height: 1.15em;
       }
     }
   }

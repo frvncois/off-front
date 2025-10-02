@@ -24,9 +24,6 @@ const sectionRef = ref(null)
 const animations = ref([])
 const hasAnimated = ref(false)
 
-/**
- * Reset GSAP + DOM state
- */
 const cleanup = () => {
   animations.value.forEach(anim => anim.kill?.())
   animations.value = []

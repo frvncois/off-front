@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 import { RouterView, useRouter, useRoute } from 'vue-router'
 import { useContentStore } from '@/stores/content.js'
 import { ScrollSmoother } from 'gsap/ScrollSmoother'
@@ -44,5 +44,13 @@ onMounted(() => {
   })
 
   loadContent()
+})
+
+watch(() => route.path, () => {
+  const scrollSmoother = ScrollSmoother.get()
+  if (scrollSmoother) {
+    scrollSmoother.scrollTo(0, false)
+  }
+  window.scrollTo(0, 0)
 })
 </script>
