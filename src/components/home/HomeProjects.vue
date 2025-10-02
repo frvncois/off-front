@@ -20,11 +20,15 @@
       </div>
       <swiper
         v-if="projects && projects.length"
-        :slidesPerView="'4'"
-        :spaceBetween="30"
+        :slidesPerView="'3.5'"
+        :spaceBetween="10"
         :modules="modules"
         class="is-items"
         ref="swiperRef"
+        :breakpoints="{
+          320: { slidesPerView: 1.5 },
+          1120: { slidesPerView: 3.5 }
+        }"
       >
         <swiper-slide
           v-for="project in projects"
@@ -329,7 +333,7 @@ section {
   }
 
   :deep(.is-item) {
-    width: 60vw;
+    width: 40vw;
   }
 }
 </style>
