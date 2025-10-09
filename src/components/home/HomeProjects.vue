@@ -20,14 +20,24 @@
       </div>
       <swiper
         v-if="projects && projects.length"
-        :slidesPerView="'3.5'"
-        :spaceBetween="10"
+        :slides-per-view="3.5"
+        :space-between="10"
         :modules="modules"
         class="is-items"
         ref="swiperRef"
+        :slides-per-group="1"
+        :centered-slides="true"
         :breakpoints="{
-          320: { slidesPerView: 1.5 },
-          1120: { slidesPerView: 3.5 }
+          320: {
+            slidesPerView: 1.5,
+            slidesPerGroup: 1,
+            spaceBetween: 10
+          },
+          1120: {
+            slidesPerView: 3.5,
+            slidesPerGroup: 1,
+            spaceBetween: 10
+          }
         }"
       >
         <swiper-slide
@@ -274,15 +284,14 @@ section {
 
     > .is-items {
       flex: 1;
-      padding-left: var(--space-lg);
+      width: 100%;
       padding-bottom: var(--space-md);
     }
   }
 }
 
-:deep(.swiper-slide) {
-  width: auto !important;
-  flex-shrink: 0;
+:deep(.swiper-wrapper) {
+  padding-right: var(--space-lg);
 }
 
 :deep(.is-item) {
@@ -291,7 +300,6 @@ section {
   padding: var(--space-rg);
   gap: var(--space-rg);
   height: 100%;
-  width: 22.5vw;
 
   & .is-cover {
     position: relative;
@@ -304,16 +312,6 @@ section {
   & h2, & h3 { will-change: transform, opacity; }
   & h2 { text-transform: uppercase; }
   & h3 { font-family: 'serif'; }
-}
-
-
-:deep(.swiper-pagination-bullet) {
-  background: var(--color-text, #000);
-  opacity: 0.3;
-}
-
-:deep(.swiper-pagination-bullet-active) {
-  opacity: 1;
 }
 
 @media screen and (max-width: 1120px) {
@@ -330,10 +328,6 @@ section {
         }
       }
     }
-  }
-
-  :deep(.is-item) {
-    width: 40vw;
   }
 }
 </style>
