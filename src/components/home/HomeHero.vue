@@ -97,14 +97,14 @@ const animateElements = () => {
   animations.value.push(tl)
 
   if (coverImage) {
-    const parallaxTrigger = ScrollTrigger.create({
-      trigger: coverElement,
-      start: 'top bottom',
+    const pinTrigger = ScrollTrigger.create({
+      trigger: coverImage,
+      start: 'top top',
       end: 'bottom top',
-      scrub: 1,
-      animation: gsap.fromTo(coverImage, { y: '-75%' }, { y: '25%' })
+      pin: coverImage,
+      pinSpacing: false
     })
-    scrollTriggers.value.push(parallaxTrigger)
+    scrollTriggers.value.push(pinTrigger)
   }
 
   hasAnimated.value = true
@@ -194,7 +194,7 @@ const renderRichText = (paragraph) => {
 
       > img {
         width: 100%;
-        height: 150%;
+        height: 100%;
         object-fit: cover;
         will-change: transform;
       }
