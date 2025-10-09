@@ -96,7 +96,9 @@ const animateElements = () => {
 
   animations.value.push(tl)
 
-  if (coverImage) {
+  const isMobile = window.innerWidth <= 1120
+
+  if (coverImage && !isMobile) {
     const pinTrigger = ScrollTrigger.create({
       trigger: coverImage,
       start: 'top top',
