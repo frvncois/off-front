@@ -251,7 +251,6 @@ window.playSingleGalleryExitAnimations = playSingleGalleryExitAnimations
   .gallery {
     &.is-items {
       gap: var(--space-rg);
-        width: 100%!important;
       > .is-item {
         width: 100%!important;
         margin: unset !important;
