@@ -2,8 +2,8 @@
   <section ref="sectionRef">
     <div class="about is-wrap">
       <div class="is-details">
-        <h3 v-if="project?.Value">{{ getValueText(project.Value[0]) }}</h3>
-        <h4 v-if="project?.Collaboration">{{ project.Collaboration }}</h4>
+        <h2 v-if="project?.Value">{{ getValueText(project.Value[0]) }}</h2>
+        <h3 v-if="project?.Value">{{ getValueText(project.Value[1]) }}</h3>
       </div>
       <div class="is-thumbnail">
         <span>(01)</span>
@@ -69,8 +69,8 @@ const cleanup = () => {
 const setInitialStates = () => {
   if (!sectionRef.value) return
 
+  const h2 = sectionRef.value.querySelector('.is-details h2')
   const h3 = sectionRef.value.querySelector('.is-details h3')
-  const h4 = sectionRef.value.querySelector('.is-details h4')
   const thumbnailImg = sectionRef.value.querySelector('.is-thumbnail img')
   const thumbnailSpan = sectionRef.value.querySelector('.is-thumbnail span')
   const contentP = sectionRef.value.querySelector('.is-content p')
@@ -79,7 +79,7 @@ const setInitialStates = () => {
   if (thumbnailSpan) gsap.set(thumbnailSpan, { opacity: 0 })
   if (contentP) gsap.set(contentP, { opacity: 0 })
 
-  ;[h3, h4].forEach(el => {
+  ;[h2, h3].forEach(el => {
     if (el) {
       const split = new SplitText(el, { type: 'chars' })
       splitInstances.value.push(split)
@@ -230,7 +230,7 @@ const getIntroText = (introItem) => introItem?.children?.[0]?.text || ''
       flex-direction: column;
       align-items: flex-end;
 
-      h3, h4 {
+      h2, h3 {
         overflow: hidden;
         font-size: var(--font-rg);
         will-change: transform, opacity;
