@@ -252,7 +252,7 @@ window.playSingleGalleryExitAnimations = playSingleGalleryExitAnimations
     &.is-items {
       gap: var(--space-rg);
       > .is-item {
-        width: unset !important;
+        width: 100%;
         margin: unset !important;
       }
     }
