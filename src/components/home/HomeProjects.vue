@@ -4,14 +4,14 @@
       <div class="is-title">
         <div class="is-track" ref="track1">
           <h1>
-            Projets<span>Réalisé</span>Projets<span>Réalisé</span>
-            Projets<span>Réalisé</span>Projets<span>Réalisé</span>
+            Projets<span>Réalisés</span>Projets<span>Réalisés</span>
+            Projets<span>Réalisés</span>Projets<span>Réalisés</span>
           </h1>
         </div>
         <div class="is-track" ref="track2">
           <h1>
-            Projets<span>Réalisé</span>Projets<span>Réalisé</span>
-            Projets<span>Réalisé</span>Projets<span>Réalisé</span>
+            Projets<span>Réalisés</span>Projets<span>Réalisés</span>
+            Projets<span>Réalisés</span>Projets<span>Réalisés</span>
           </h1>
         </div>
         <div class="is-action">
